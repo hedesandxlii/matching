@@ -38,9 +38,10 @@ void GS(){
 
 }
 
+
+
 void main() {
     N = 3;
-
     struct Person *persons[2*N];
     int tmp[] = {6, 4, 2}; 
     persons[0] = addPerson("Ross", 1, tmp);
