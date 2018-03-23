@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Remove intellij-files in java_solution
+java_solution/.idea/
+java_solution/out/
