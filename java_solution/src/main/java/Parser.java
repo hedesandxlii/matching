@@ -9,14 +9,21 @@ public class Parser {
     Man[] vectorOfMen;
     Woman[] vectorOfWomen;
 
-    public int readN() {
-        File file = new File("testfiles/sm-friends.in");
+    public Parser() {
+        scanner = new Scanner(System.in);
+    }
 
+    public Parser(String filePath) {
+        File file = new File(filePath);
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public int readN() {
+
         scanner.nextLine();
         scanner.nextLine();
         return Integer.parseInt(scanner.nextLine().substring(2));

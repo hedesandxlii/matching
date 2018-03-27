@@ -7,7 +7,7 @@ public class ParserTest {
     Parser parser;
     @Before
     public void setUp() {
-        parser = new Parser();
+        parser = new Parser("testfiles/sm-friends.in");
     }
 
     @Test
