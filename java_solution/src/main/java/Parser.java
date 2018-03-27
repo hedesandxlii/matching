@@ -1,71 +1,63 @@
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Parser {
-    /**
-     * All indexing is treated like person ID - 1 because person ID starts from 1   (╯°□°）╯︵ ┻━┻
-     */
-    Man[] men = new Man[250];
-    Woman[] women = new Woman[250];
-    int n;
-    public void parseData(String filepath) {
-        File f = new File(filepath);
-        Scanner scanner = null;
+    private Scanner scanner = null;
+    String[] men;
+    String[] women;
+    Man[] vectorOfMen;
+    Woman[] vectorOfWomen;
+
+    public int readN() {
+        File file = new File("testfiles/sm-friends.in");
+
         try {
-            scanner = new Scanner(f);
+            scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            System.out.println("could not find file");
         }
         scanner.nextLine();
         scanner.nextLine();
-        n = Character.getNumericValue(scanner.nextLine().charAt(2));
-        boolean readingPeople = true;
-        String[] people = new String[500]; // TODO: 2018-03-26  size?!?!?!
-        int i = 0;
-        while(readingPeople) {
-            String line = scanner.nextLine();
-            if(line.isEmpty()) {
-                readingPeople = false;
-            } else {
-                String[] numberName = line.split(" ");
-                //int number = Integer.parseInt(numberName[0]);
-                String name = numberName[1];
-                people[i] = name;
-                System.out.println((i + 1) + name);
-                i++;
+        return Integer.parseInt(scanner.nextLine().substring(2));
+    }
+
+    public void makePersonVector(int n) {
+        men = new String[n];
+        women = new String[n];
+        for (int i = 0; i<n; i++) {
+            men[i] = scanner.nextLine().split(" ")[1];
+            women[i] = scanner.nextLine().split(" ")[1];
+        }
+        scanner.nextLine();
+    }
+
+
+    public int[][] preferences(int n) {
+        int[][] result = new int[n*2][n-1];
+        for (int i = 0; i < n*2; i++) {
+            String[] line = scanner.nextLine().split(" ");
+            int[] row = new int[n];
+            for (int j = 0; j< n;j++) {
+                row[j] = Integer.parseInt(line[j+1]);
             }
-
+            result[i] = row;
         }
-        // TODO: 2018-03-26 preferences
-        readPreferences(scanner);
-
-
-
-        fillMenWomen(people);
+        
+        return result;
     }
 
-    private int[] readPreferences(Scanner scanner) {
-
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-
+    public void fillMenAndWomen(int n, String[] men, String[] women, int[][] preferences) {
+        vectorOfMen = new Man[n];
+        vectorOfWomen = new Woman[n];
+        for (int i = 0; i < n*2; i++) {
+            if (i%2==0) { //case man
+                vectorOfMen[i/2] = new Man(men[i/2],i+1,preferences[i]);
+                System.out.println(vectorOfMen[i/2].getId()+vectorOfMen[i/2].getName()+vectorOfMen[i/2].preferences[0]+vectorOfMen[i/2].preferences[1]+vectorOfMen[i/2].preferences[2]);
+            } else { //case woman
+                vectorOfWomen[i/2] = new Woman(women[i/2], i + 1, preferences[i]);
+                System.out.println(vectorOfWomen[i/2].getId()+vectorOfWomen[i/2].getName()+vectorOfWomen[i/2].preferences[0]+vectorOfWomen[i/2].preferences[1]+vectorOfWomen[i/2].preferences[2]);
+            }
         }
-        return null;
-    }
-
-    private void fillMenWomen(String[] people) {
-
-        int i = 0;
-        do {
-            //men[i] = new Man();
-            i++;
-            //women todo
-
-            i++;
-        } while (people[i] != null);
     }
 }
